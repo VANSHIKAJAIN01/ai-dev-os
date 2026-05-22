@@ -1,0 +1,29 @@
+version: "3.9"
+
+services:
+  # Qdrant: our vector database
+  # This is where we store "meaning" of your code chunks
+  # so we can do semantic search later
+  qdrant:
+    image: qdrant/qdrant
+    ports:
+      - "6333:6333"
+    volumes:
+      - qdrant_data:/qdrant/storage
+
+  # PostgreSQL: our normal relational database
+  # Stores chat history, users, projects, agent memory
+  postgres:
+    image: postgres:15
+    environment:
+      POSTGRES_USER: aidevos
+      POSTGRES_PASSWORD: aidevos
+      POSTGRES_DB: aidevos
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+volumes:
+  qdrant_data:
+  postgres_data:
