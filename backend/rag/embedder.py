@@ -16,7 +16,8 @@ _model = SentenceTransformer("all-MiniLM-L6-v2")
 
 
 async def embed_texts(texts: list[str]) -> list[list[float]]:
-    # encode() returns numpy arrays, we convert to plain Python lists
+    if not texts:
+        return []
     embeddings = _model.encode(texts, show_progress_bar=True)
     return embeddings.tolist()
 

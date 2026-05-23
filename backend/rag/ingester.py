@@ -10,7 +10,10 @@ Step by step:
 """
 import httpx
 import os
+from dotenv import load_dotenv
 from rag.chunker import chunk_text
+
+load_dotenv()
 from rag.embedder import embed_texts
 from rag.vector_store import upsert_chunks
 
@@ -21,6 +24,9 @@ async def ingest_github_repo(repo_url: str, project_id: str) -> dict:
     owner, repo = parts[-2], parts[-1].replace(".git", "")
 
     files = await fetch_repo_files(owner, repo)
+
+    if not files:
+        return {"status": "error", "message": "No files found. Check the repo URL and GITHUB_TOKEN."}
 
     all_chunks = []
     for file in files:

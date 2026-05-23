@@ -6,8 +6,11 @@ Every request from the frontend comes through here first.
 """
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from dotenv import load_dotenv
 from api.chat import router as chat_router
 from api.ingest import router as ingest_router
+
+load_dotenv()
 
 app = FastAPI(title="AI Dev OS", version="0.1.0")
 

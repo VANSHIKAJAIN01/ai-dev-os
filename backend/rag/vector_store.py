@@ -49,6 +49,11 @@ async def upsert_chunks(project_id: str, chunks: list[dict], embeddings: list[li
 
 
 async def search(project_id: str, query_vector: list[float], top_k: int = 5) -> list[dict]:
+    collections = await client.get_collections()
+    names = [c.name for c in collections.collections]
+    if project_id not in names:
+        return []
+
     results = await client.search(
         collection_name=project_id,
         query_vector=query_vector,
